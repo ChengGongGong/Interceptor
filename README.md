@@ -1,17 +1,26 @@
 # 注解形式Interceptor 
 # 1.自定义注解
+
 @Retention(RetentionPolicy.RUNTIME)
+
 @Documented
+
 @Target({ElementType.TYPE, ElementType.METHOD})
+
 @Order(Ordered.HIGHEST_PRECEDENCE)
+
 public@interface TestFilter {
+
     boolean value() default true;
+    
 }
 
 # 2.自定义类实现HandlerInterceptor接口，并重新其中的方法
 
 @Slf4j
+
 public class TestInterceptor implements HandlerInterceptor {
+
     private final static String ENCODING = "UTF-8";
 
     private final static String CONTENT_TYPE = "application/json; charset=utf-8";
@@ -68,6 +77,7 @@ public class TestInterceptor implements HandlerInterceptor {
 # 3.注册该bean到spring中去
 
 @Configuration
+
 public class FilterConfig extends WebMvcConfigurationSupport {
     
     //此处手动注入interceptor，防止该拦截器中注入serviceBean出现空指针异常
@@ -91,9 +101,13 @@ public class FilterConfig extends WebMvcConfigurationSupport {
 # 1.使用注解WebFilter直接集成
 
 @Slf4j
+
 @Component
+
 @WebFilter(filterName = "CommonFilter", urlPatterns = "/*")
+
 public class CommonFilter extends GenericFilter {
+
     @Autowired
     private PropertyManager propertyManager;
 
@@ -121,7 +135,9 @@ public class CommonFilter extends GenericFilter {
 # 2.使用bean注入的方式
 
 @Component
+
 public class CommonFilterConfig  {
+
     @Autowired
     private CommonFilter commonFilter;
     //如果有多个filter，注入多个bean
