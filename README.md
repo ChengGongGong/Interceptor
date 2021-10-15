@@ -139,13 +139,18 @@ public class CommonFilterConfig  {
 
 # 总结Interceptor(拦截器)与filter(过滤器)的区别
 1.实现原理不同，过滤器基于函数回调的，实现doFilter()方法,拦截器是基于java反射机制(动态代理)实现的。
+    
 2.使用范围不同，过滤器实现的是javax.servelet.Filter接口，需要依赖于Tomcat等web容器，只能在web程序中使用，
   而拦截器是一个spring组件，由spring容器管理，并不依赖于web容器，可以单独使用，也可以用于Application、Swing等程序中；
+    
 3.触发时机不同，过滤器是在请求进入容器后，进入servelet之前进行预处理，请求结束是在servlet处理完成之后，
   而拦截器是在请求进入servlet之后，进入Controller之前进行预处理的，请求结束是在controller处理完成之后；
+    
 4.拦截的请求范围不同，过滤器几乎对所有进入容器的请求起作用，而拦截器只会对controller中的请求或访问static目录下的资源请求起作用。
+    
 5.注入bean的情况不同，可以在过滤器中直接注入service服务并生效，而拦截器需要先将interceptor手动注入，再在拦截器中注入service服务,
   因为拦截器加载的时间点是在springcontext之前，而bean是由spring进行管理的。
+    
 6.控制执行顺序不同，过滤器用@Order注解控制执行顺序，通过@Order控制过滤器的级别，值越小级别越高越先执行；
   而拦截器默认的执行顺序，就是它的注册顺序，也可以通过Order手动设置控制，值越小越先执行，先声明的拦截器 preHandle() 方法先执行，而postHandle()方法反而会后执行。
   
